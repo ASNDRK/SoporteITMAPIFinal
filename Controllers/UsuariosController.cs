@@ -10,11 +10,11 @@ using System.Web.Http.Cors;
 
 namespace SoporteITMAPI.Controllers
 {
+    [EnableCors(origins: "https://localhost:44391/", headers: "*", methods: "*")]
+    [RoutePrefix("api/Usuarios")]
+    [Authorize]
     public class UsuariosController : ApiController
     {
-        [EnableCors(origins: "https://localhost:44391/", headers: "*", methods: "*")]
-        [RoutePrefix("api/Usuarios")]
-        [Authorize]
         //[HttpGet]
         //[Route("ListadoClientesConTelefono")]
         //public IQueryable ListadoClientesConTelefono()
