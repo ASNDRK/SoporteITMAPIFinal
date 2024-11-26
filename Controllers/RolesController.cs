@@ -11,7 +11,7 @@ using System.Web.Http.Cors;
 
 namespace SoporteITMAPI.Controllers
 {
-    [EnableCors(origins: "https://localhost:44391/", headers: "*", methods: "*")]
+    [EnableCors(origins: "https://localhost:44391", headers: "*", methods: "*")]
     [RoutePrefix("api/Roles")]
     [Authorize]
     public class RolesController : ApiController
