@@ -9,8 +9,11 @@ namespace SoporteITMAPI.Clases
 {
     public class clsUsuario
     {
-        private DBSuperEntities dbSuper = new DBSuperEntities();
+        private SoporteEntities dbsoporte = new SoporteEntities();
         public Usuario usuario { get; set; }
+        /// <summary>
+        /// Debe Crease el usuario_perfil tabla en modelo
+        /// </summary>
         public Usuario_Perfil usuarioPerfil { get; set; }
         public string Actualizar(int Perfil)
         {
@@ -26,6 +29,7 @@ namespace SoporteITMAPI.Clases
                     {
                         return "No existe el usuario";
                     }
+                    //Esto es lo que viene de la tabla Usuari_Perfil
                     usuario.id = _usuario.id;
                     usuario.Salt = cifrar.Salt;
                     usuario.Clave = cifrar.PasswordCifrado;
