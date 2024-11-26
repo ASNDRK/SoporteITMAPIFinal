@@ -9,6 +9,7 @@
 
 namespace SoporteITMAPI.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     
@@ -28,7 +29,8 @@ namespace SoporteITMAPI.Models
         public string Contraseña { get; set; }
         public int IdRol { get; set; }
         public string Documento { get; set; }
-    
+
+        [JsonIgnore]
         public virtual Role Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Solicitude> Solicitudes { get; set; }
