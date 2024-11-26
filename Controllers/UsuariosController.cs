@@ -10,53 +10,39 @@ using System.Web.Http.Cors;
 
 namespace SoporteITMAPI.Controllers
 {
+    [EnableCors(origins: "https://localhost:44387", headers: "*", methods: "*")]
+    [RoutePrefix("api/Usuarios")]
     public class UsuariosController : ApiController
     {
-        [EnableCors(origins: "https://localhost:44391/", headers: "*", methods: "*")]
-        [RoutePrefix("api/Usuarios")]
-        [Authorize]
-        //[HttpGet]
-        //[Route("ListadoClientesConTelefono")]
-        //public IQueryable ListadoClientesConTelefono()
-        //{
-        //    //Se crea una instancia del objeto clsCliente y se invoca el método consultar
-        //    clsUsuario usuario= new clsUsuario();
-        //    return usuario.ClientesConTelefonos();
-        //}
         [HttpGet]
-        [Route("ConsultarXDocumento")]
-        public Usuario ConsultarXDocumento(string Documento)
+        [Route("ListarUsuarios")]
+        public IQueryable ListarUsuarios()
         {
-            //Se crea una instancia del objeto clsCliente y se invoca el método consultar
             clsUsuario usuario = new clsUsuario();
-            return usuario.Consultar(Documento);
+            return usuario.ListarUsuarios();
         }
         [HttpPost]
         [Route("Insertar")]
-        public string Insertar([FromBody] Usuario usuario)
+        public string Insertar([FromBody] Usuario usuario, int Perfil)
         {
-            //Se crea una instancia del objeto cliente, se pasan los datos de entrada (El objeto cliente), y se invoca él método Insertar
-            clsUsuario _usuario = new clsUsuario();
-            _usuario.usuario = usuario;
-            return _usuario.Insertar();
+            clsUsuario Usuario = new clsUsuario();
+            Usuario.usuario = usuario;
+            return Usuario.Insertar(Perfil);
         }
         [HttpPut]
         [Route("Actualizar")]
-        public string Actualizar([FromBody] Usuario usuario)
+        public string Actualizar([FromBody] Usuario usuario, int Perfil)
         {
-            //Se crea una instancia del objeto cliente, se pasan los datos de entrada (El objeto cliente), y se invoca él método Insertar
-            clsUsuario _usuario= new clsUsuario();
-            _usuario.usuario = usuario;
-            return _usuario.Actualizar();
+            clsUsuario Usuario = new clsUsuario();
+            Usuario.usuario = usuario;
+            return Usuario.Actualizar(Perfil);
         }
-        [HttpDelete]
-        [Route("Eliminar")]
-        public string Eliminar([FromBody] Usuario usuario)
+        [HttpPut]
+        [Route("Activar")]
+        public string Activar(int idUsuarioPerfil, bool Activo)
         {
-            //Se crea una instancia del objeto cliente, se pasan los datos de entrada (El objeto cliente), y se invoca él método Insertar
-            clsUsuario _usuario = new clsUsuario();
-            _usuario.usuario = usuario;
-            return _usuario.Eliminar();
+            clsUsuario Usuario = new clsUsuario();
+            return Usuario.Activar(idUsuarioPerfil, Activo);
         }
     }
 }

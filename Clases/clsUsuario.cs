@@ -9,54 +9,42 @@ namespace SoporteITMAPI.Clases
 {
     public class clsUsuario
     {
-        private SoporteEntities dbsoporte = new SoporteEntities();
+        private DBSuperEntities dbSuper = new DBSuperEntities();
         public Usuario usuario { get; set; }
-        public string Insertar()
+        public Usuario_Perfil usuarioPerfil { get; set; }
+        public string Actualizar(int Perfil)
         {
             try
             {
-                //Para grabar en la base de datos con EF, solo se invoca el método .add de la clase que se quiere gestionar
-                dbsoporte.Usuarios.Add(usuario);
-                //Se debe grabar en la información con el método .savechanges();
-                dbsoporte.SaveChanges();
-                //Retorna la respuesta
-                return "Se grabó el cliente: " + usuario.Nombre;
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-        public string Actualizar()
-        {
-            try
-            {
-                dbsoporte.Usuarios.AddOrUpdate(usuario);
-                dbsoporte.SaveChanges();
-                return "Se actualizaron los datos del cliente con Documento: " + usuario.Documento;
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-        public string Eliminar()
-        {
-            try
-            {
-                //Hay que consultar el cliente, como el método devuelve un objeto de tipo cliente, debo crear una instancia de la clase CLIEnte
-                Usuario _usuario = Consultar(usuario.Documento);
-                //Se valida si el cliente existe para eliminarlo
-                if (_usuario == null)
+                clsCypher cifrar = new clsCypher();
+                cifrar.Password = usuario.Clave;
+                if (cifrar.CifrarClave())
                 {
-                    //El cliente no existe
-                    return "El usuario no se encuentra en la base de datos";
+                    //Se debe consultar el id del usuario y el id del usuario perfil
+                    Usuario _usuario = Consultar(usuario.Documento_Empleado);
+                    if (_usuario == null)
+                    {
+                        return "No existe el usuario";
+                    }
+                    usuario.id = _usuario.id;
+                    usuario.Salt = cifrar.Salt;
+                    usuario.Clave = cifrar.PasswordCifrado;
+                    dbSuper.Usuarios.AddOrUpdate(usuario);
+                    dbSuper.SaveChanges();
+
+                    //Agregar el perfil del usuario
+                    usuarioPerfil = ConsultarUsuarioPerfil(usuario.id);
+                    usuarioPerfil.idUsuario = usuario.id;
+                    usuarioPerfil.idPerfil = Perfil;
+                    usuarioPerfil.Activo = true;
+                    dbSuper.Usuario_Perfil.AddOrUpdate(usuarioPerfil);
+                    dbSuper.SaveChanges();
+
+                    return "Se actualizó el usuario: " + usuario.userName;
                 }
                 else
                 {
-                    dbsoporte.Usuarios.Remove(_usuario);
-                    dbsoporte.SaveChanges();
-                    return "Se eliminó el usuario: " + _usuario.Nombre + " " + _usuario.Apellido;
+                    return "No pudo cifrar la clave.";
                 }
             }
             catch (Exception ex)
@@ -66,33 +54,89 @@ namespace SoporteITMAPI.Clases
         }
         public Usuario Consultar(string Documento)
         {
-            //Para consultar se utiliza la funcion FirstOrDefault() con las condiciones de la consulta dentro del paréntesis
-            //Para elaborar el filtro, se utilizan las expresioens lambda
-            //Las expresiones lambda, son "variables" que se convierten en una instancia del objeto que se está "trabajando"
-            //Se escribe la "variable" seguido de la instrución "=>"
-            return dbsoporte.Usuarios.FirstOrDefault(u => u.Documento == Documento);
+            return dbSuper.Usuarios.FirstOrDefault(U => U.Documento_Empleado == Documento);
         }
-        //public IQueryable ClientesConTelefonos()
-        //{
-        //    return from C in dbsoporte.Set<Usuario>()
-        //           join T in dbSuper.Set<TELEfono>()
-        //           on C.Documento equals T.Documento into TeN
-        //           from x in TeN.DefaultIfEmpty()
-        //           orderby C.Nombre, C.PrimerApellido, C.SegundoApellido
-        //           group TeN by new { C.Documento, C.Nombre, C.PrimerApellido, C.SegundoApellido, C.FechaNacimiento, C.Email, C.Direccion }
-        //           into g
-        //           select new
-        //           {
-        //               Editar = "<img src=\"../Imagenes/Editar.png\" onclick=\"Editar('" + g.Key.Documento + "', '" + g.Key.Nombre + "', '" + g.Key.PrimerApellido +
-        //                         "', '" + g.Key.SegundoApellido + "', '" + g.Key.Direccion + "', '" + g.Key.Email + "', '" + g.Key.FechaNacimiento + "') \"style=\"cursor:grab\"/>",
-        //               //Editar = "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#modTelefono'>Edit</button>",
-        //               NroTelefonos = g.Count(),
-        //               Documento = g.Key.Documento,
-        //               Nombre = g.Key.Nombre + " " + g.Key.PrimerApellido + " " + g.Key.SegundoApellido,
-        //               Direccion = g.Key.Direccion,
-        //               Email = g.Key.Email,
-        //               FechaNacimiento = g.Key.FechaNacimiento
-        //           };
+        public Usuario_Perfil ConsultarUsuarioPerfil(int idUsuario)
+        {
+            return dbSuper.Usuario_Perfil.FirstOrDefault(UP => UP.idUsuario == idUsuario);
+        }
+        public string Insertar(int Perfil)
+        {
+            try
+            {
+                clsCypher cifrar = new clsCypher();
+                cifrar.Password = usuario.Clave;
+                if (cifrar.CifrarClave())
+                {
+                    usuario.Salt = cifrar.Salt;
+                    usuario.Clave = cifrar.PasswordCifrado;
+                    dbSuper.Usuarios.Add(usuario);
+                    dbSuper.SaveChanges();
+
+                    //Agregar el perfil del usuario
+                    usuarioPerfil = new Usuario_Perfil();
+                    usuarioPerfil.idUsuario = usuario.id;
+                    usuarioPerfil.idPerfil = Perfil;
+                    usuarioPerfil.Activo = true;
+                    dbSuper.Usuario_Perfil.Add(usuarioPerfil);
+                    dbSuper.SaveChanges();
+
+                    return "Se insertó el usuario: " + usuario.userName;
+                }
+                else
+                {
+                    return "No pudo cifrar la clave.";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        public string Activar(int idUsuarioPerfil, bool Activo)
+        {
+            try
+            {
+                Usuario_Perfil usuario_Perfil = dbSuper.Usuario_Perfil.FirstOrDefault(u => u.id == idUsuarioPerfil);
+                if (usuario_Perfil != null)
+                {
+                    usuario_Perfil.Activo = Activo;
+                    dbSuper.SaveChanges();
+                    return "Se actualizó el estado del usario a " + (Activo ? "ACTIVO" : "INACTIVO");
+                }
+                return "El usuario no existe en la base de datos";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+        public IQueryable ListarUsuarios()
+        {
+            return from U in dbSuper.Set<Usuario>()
+                   join UP in dbSuper.Set<Usuario_Perfil>()
+                   on U.id equals UP.idUsuario
+                   join P in dbSuper.Set<Perfil>()
+                   on UP.idPerfil equals P.id
+                   join E in dbSuper.Set<EMPLeado>()
+                   on U.Documento_Empleado equals E.Documento
+                   join EC in dbSuper.Set<EMpleadoCArgo>()
+                   on E.Documento equals EC.Documento
+                   join C in dbSuper.Set<CARGo>()
+                   on EC.CodigoCargo equals C.Codigo
+                   select new
+                   {
+                       Editar = "<button type=\"button\" id=\"btnEditar\" class=\"btn-block btn-lg btn-primary\" onclick=\"Editar('" + E.Documento + "', '" +
+                                E.Nombre + " " + E.PrimerApellido + " " + E.SegundoApellido + "', '" + C.Nombre + "', '" + U.userName + "', '" +
+                                P.id + "', '" + UP.Activo + "', '" + UP.id + "')\">Edit</button>",
+                       Documento = U.Documento_Empleado,
+                       Empleado = E.Nombre + " " + E.PrimerApellido + " " + E.SegundoApellido,
+                       Cargo = C.Nombre,
+                       Usuario = U.userName,
+                       Perfil = P.Nombre,
+                       Activo = UP.Activo ? "SI" : "NO"
+                   };
+        }
     }
-    
+
 }
