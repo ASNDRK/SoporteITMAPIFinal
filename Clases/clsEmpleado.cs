@@ -7,6 +7,7 @@ namespace SoporteITMAPI.Clases
 {
     public class clsEmpleado
     {
+<<<<<<< HEAD
         private SoporteEntities dbSoporte = new SoporteEntities();
         public EMPLeado empleado { get; set; }
         public IQueryable Consultar(string Documento)
@@ -42,5 +43,8 @@ namespace SoporteITMAPI.Clases
                        Role = R.NombreRol
                    };
         }*/
+=======
+        
+>>>>>>> c01f27451e9a719a8decfceb6aa5e00c2b3e6e6d
     }
 }
