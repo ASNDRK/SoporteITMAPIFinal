@@ -17,7 +17,6 @@ namespace SoporteITMAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Usuario()
         {
-            this.Empleadoes = new HashSet<Empleado>();
             this.Solicituds = new HashSet<Solicitud>();
             this.Solicituds1 = new HashSet<Solicitud>();
             this.Usuario_Rol = new HashSet<Usuario_Rol>();
@@ -28,9 +27,9 @@ namespace SoporteITMAPI.Models
         public string Documento { get; set; }
         public string Clave { get; set; }
         public string Salt { get; set; }
+        public string UserName { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Empleado> Empleadoes { get; set; }
+        public virtual Empleado Empleado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Solicitud> Solicituds { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

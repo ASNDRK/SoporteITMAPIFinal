@@ -14,6 +14,12 @@ namespace SoporteITMAPI.Models
     
     public partial class Empleado
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Empleado()
+        {
+            this.Usuarios = new HashSet<Usuario>();
+        }
+    
         public string Documento { get; set; }
         public string Nombre { get; set; }
         public string PrimerApellido { get; set; }
@@ -23,6 +29,7 @@ namespace SoporteITMAPI.Models
         public System.DateTime FechaNacimiento { get; set; }
         public Nullable<int> IdUsuario { get; set; }
     
-        public virtual Usuario Usuario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Usuario> Usuarios { get; set; }
     }
 }

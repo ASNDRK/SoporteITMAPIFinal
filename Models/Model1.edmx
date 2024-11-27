@@ -67,6 +67,7 @@
           <Property Name="Documento" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Clave" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Salt" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Usuario_Rol">
           <Key>
@@ -77,18 +78,6 @@
           <Property Name="IdRol" Type="int" Nullable="false" />
           <Property Name="Activo" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Empleado__IdUsua__619B8048">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="IdUsuario" />
-            </Principal>
-            <Dependent Role="Empleado">
-              <PropertyRef Name="IdUsuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Solicitud__IdCat__7E37BEF6">
           <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
           <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
@@ -165,6 +154,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Usuario_Empleados">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="Documento" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="Documento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="SoporteModelStoreContainer">
           <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
@@ -173,10 +174,6 @@
           <EntitySet Name="Solicitud" EntityType="Self.Solicitud" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario_Rol" EntityType="Self.Usuario_Rol" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Empleado__IdUsua__619B8048" Association="Self.FK__Empleado__IdUsua__619B8048">
-            <End Role="Usuario" EntitySet="Usuario" />
-            <End Role="Empleado" EntitySet="Empleado" />
-          </AssociationSet>
           <AssociationSet Name="FK__Solicitud__IdCat__7E37BEF6" Association="Self.FK__Solicitud__IdCat__7E37BEF6">
             <End Role="Categoria" EntitySet="Categoria" />
             <End Role="Solicitud" EntitySet="Solicitud" />
@@ -200,6 +197,10 @@
           <AssociationSet Name="FK__Usuario_R__IdUsu__5DCAEF64" Association="Self.FK__Usuario_R__IdUsu__5DCAEF64">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Usuario_Rol" EntitySet="Usuario_Rol" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_Empleados" Association="Self.FK_Usuario_Empleados">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -228,7 +229,7 @@
           <Property Name="Telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IdUsuario" Type="Int32" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK__Empleado__IdUsua__619B8048" FromRole="Empleado" ToRole="Usuario" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuario_Empleados" FromRole="Empleado" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Estado">
           <Key>
@@ -277,7 +278,8 @@
           <Property Name="Documento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Clave" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Salt" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Empleadoes" Relationship="Self.FK__Empleado__IdUsua__619B8048" FromRole="Usuario" ToRole="Empleado" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Empleado" Relationship="Self.FK_Usuario_Empleados" FromRole="Usuario" ToRole="Empleado" />
           <NavigationProperty Name="Solicituds" Relationship="Self.FK__Solicitud__IdUsu__7B5B524B" FromRole="Usuario" ToRole="Solicitud" />
           <NavigationProperty Name="Solicituds1" Relationship="Self.FK__Solicitud__IdUsu__7C4F7684" FromRole="Usuario" ToRole="Solicitud" />
           <NavigationProperty Name="Usuario_Rol" Relationship="Self.FK__Usuario_R__IdUsu__5DCAEF64" FromRole="Usuario" ToRole="Usuario_Rol" />
@@ -305,15 +307,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Empleado__IdUsua__619B8048">
-          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+        <Association Name="FK_Usuario_Empleados">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Usuario">
-              <PropertyRef Name="IdUsuario" />
+            <Principal Role="Empleado">
+              <PropertyRef Name="Documento" />
             </Principal>
-            <Dependent Role="Empleado">
-              <PropertyRef Name="IdUsuario" />
+            <Dependent Role="Usuario">
+              <PropertyRef Name="Documento" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -393,9 +395,9 @@
             <End Role="Categoria" EntitySet="Categorias" />
             <End Role="Solicitud" EntitySet="Solicituds" />
           </AssociationSet>
-          <AssociationSet Name="FK__Empleado__IdUsua__619B8048" Association="Self.FK__Empleado__IdUsua__619B8048">
-            <End Role="Usuario" EntitySet="Usuarios" />
+          <AssociationSet Name="FK_Usuario_Empleados" Association="Self.FK_Usuario_Empleados">
             <End Role="Empleado" EntitySet="Empleadoes" />
+            <End Role="Usuario" EntitySet="Usuarios" />
           </AssociationSet>
           <AssociationSet Name="FK__Solicitud__IdEst__7D439ABD" Association="Self.FK__Solicitud__IdEst__7D439ABD">
             <End Role="Estado" EntitySet="Estadoes" />
@@ -490,6 +492,7 @@
                 <ScalarProperty Name="Documento" ColumnName="Documento" />
                 <ScalarProperty Name="Clave" ColumnName="Clave" />
                 <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="45ee3d6160cd4169b0d9dd8ea0fa4d77" Name="Diagram1">
-        <EntityTypeShape EntityType="SoporteModel.Categoria" Width="1.5" PointX="10.375" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoporteModel.Empleado" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoporteModel.Estado" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoporteModel.Role" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoporteModel.Solicitud" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoporteModel.Usuario" Width="1.5" PointX="0.5" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoporteModel.Usuario_Rol" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+      <Diagram DiagramId="1aacc9febda54bd28a9040245e730f9d" Name="Diagram1">
+        <EntityTypeShape EntityType="SoporteModel.Categoria" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Empleado" Width="1.5" PointX="8.875" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Estado" Width="1.5" PointX="2.5" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Role" Width="1.5" PointX="12.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Solicitud" Width="1.5" PointX="1.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Usuario" Width="1.5" PointX="10.5" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Usuario_Rol" Width="1.5" PointX="13.375" PointY="4.5" IsExpanded="true" />
         <AssociationConnector Association="SoporteModel.FK__Solicitud__IdCat__7E37BEF6" ManuallyRouted="false" />
-        <AssociationConnector Association="SoporteModel.FK__Empleado__IdUsua__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteModel.FK_Usuario_Empleados" ManuallyRouted="false" />
         <AssociationConnector Association="SoporteModel.FK__Solicitud__IdEst__7D439ABD" ManuallyRouted="false" />
         <AssociationConnector Association="SoporteModel.FK__Usuario_R__IdRol__5EBF139D" ManuallyRouted="false" />
         <AssociationConnector Association="SoporteModel.FK__Solicitud__IdUsu__7B5B524B" ManuallyRouted="false" />
