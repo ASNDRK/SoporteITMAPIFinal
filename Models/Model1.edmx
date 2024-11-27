@@ -5,7 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="SoporteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Categorias">
+        <EntityType Name="Categoria">
           <Key>
             <PropertyRef Name="IdCategoria" />
           </Key>
@@ -13,7 +13,20 @@
           <Property Name="NombreCategoria" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="Estados">
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="Documento" />
+          </Key>
+          <Property Name="Documento" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PrimerApellido" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SegundoApellido" Type="nvarchar" MaxLength="50" />
+          <Property Name="Direccion" Type="nvarchar" MaxLength="255" />
+          <Property Name="Telefono" Type="nvarchar" MaxLength="20" />
+          <Property Name="FechaNacimiento" Type="date" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" />
+        </EntityType>
+        <EntityType Name="Estado">
           <Key>
             <PropertyRef Name="IdEstado" />
           </Key>
@@ -21,7 +34,7 @@
           <Property Name="NombreEstado" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="Roles">
+        <EntityType Name="Role">
           <Key>
             <PropertyRef Name="IdRol" />
           </Key>
@@ -29,119 +42,164 @@
           <Property Name="NombreRol" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Descripcion" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="Solicitudes">
+        <EntityType Name="Solicitud">
           <Key>
             <PropertyRef Name="IdSolicitud" />
           </Key>
           <Property Name="IdSolicitud" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NumeroSolicitud" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Tipo" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Titulo" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Titulo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="255" />
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="FechaResolucion" Type="datetime" />
-          <Property Name="IdUsuarioSolicitante" Type="int" Nullable="false" />
-          <Property Name="IdUsuarioAsignado" Type="int" />
+          <Property Name="IdUsuarioCreador" Type="int" Nullable="false" />
+          <Property Name="IdUsuarioResponsable" Type="int" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
           <Property Name="IdCategoria" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Usuarios">
+        <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="IdUsuario" />
           </Key>
           <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Apellido" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Correo" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="Contraseña" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="IdRol" Type="int" Nullable="false" />
+          <Property Name="Correo" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Documento" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Clave" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Salt" Type="nvarchar" MaxLength="255" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Solicitudes_Categorias">
-          <End Role="Categorias" Type="Self.Categorias" Multiplicity="1" />
-          <End Role="Solicitudes" Type="Self.Solicitudes" Multiplicity="*" />
+        <EntityType Name="Usuario_Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" Nullable="false" />
+          <Property Name="IdRol" Type="int" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Empleado__IdUsua__619B8048">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Categorias">
-              <PropertyRef Name="IdCategoria" />
-            </Principal>
-            <Dependent Role="Solicitudes">
-              <PropertyRef Name="IdCategoria" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Solicitudes_Estados">
-          <End Role="Estados" Type="Self.Estados" Multiplicity="1" />
-          <End Role="Solicitudes" Type="Self.Solicitudes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Estados">
-              <PropertyRef Name="IdEstado" />
-            </Principal>
-            <Dependent Role="Solicitudes">
-              <PropertyRef Name="IdEstado" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Solicitudes_UsuariosAsignado">
-          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
-          <End Role="Solicitudes" Type="Self.Solicitudes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuarios">
+            <Principal Role="Usuario">
               <PropertyRef Name="IdUsuario" />
             </Principal>
-            <Dependent Role="Solicitudes">
-              <PropertyRef Name="IdUsuarioAsignado" />
+            <Dependent Role="Empleado">
+              <PropertyRef Name="IdUsuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Solicitudes_UsuariosSolicitante">
-          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
-          <End Role="Solicitudes" Type="Self.Solicitudes" Multiplicity="*" />
+        <Association Name="FK__Solicitud__IdCat__7E37BEF6">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Usuarios">
+            <Principal Role="Categoria">
+              <PropertyRef Name="IdCategoria" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="IdCategoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__IdEst__7D439ABD">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estado">
+              <PropertyRef Name="IdEstado" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="IdEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__IdUsu__7B5B524B">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
               <PropertyRef Name="IdUsuario" />
             </Principal>
-            <Dependent Role="Solicitudes">
-              <PropertyRef Name="IdUsuarioSolicitante" />
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="IdUsuarioCreador" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Usuarios_Roles">
-          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
-          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
+        <Association Name="FK__Solicitud__IdUsu__7C4F7684">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Roles">
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="IdUsuarioResponsable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario_R__IdRol__5EBF139D">
+          <End Role="Role" Type="Self.Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario_Rol" Type="Self.Usuario_Rol" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
               <PropertyRef Name="IdRol" />
             </Principal>
-            <Dependent Role="Usuarios">
+            <Dependent Role="Usuario_Rol">
               <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario_R__IdUsu__5DCAEF64">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario_Rol" Type="Self.Usuario_Rol" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Usuario_Rol">
+              <PropertyRef Name="IdUsuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="SoporteModelStoreContainer">
-          <EntitySet Name="Categorias" EntityType="Self.Categorias" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Estados" EntityType="Self.Estados" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Solicitudes" EntityType="Self.Solicitudes" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Solicitudes_Categorias" Association="Self.FK_Solicitudes_Categorias">
-            <End Role="Categorias" EntitySet="Categorias" />
-            <End Role="Solicitudes" EntitySet="Solicitudes" />
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estado" EntityType="Self.Estado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Solicitud" EntityType="Self.Solicitud" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario_Rol" EntityType="Self.Usuario_Rol" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Empleado__IdUsua__619B8048" Association="Self.FK__Empleado__IdUsua__619B8048">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Empleado" EntitySet="Empleado" />
           </AssociationSet>
-          <AssociationSet Name="FK_Solicitudes_Estados" Association="Self.FK_Solicitudes_Estados">
-            <End Role="Estados" EntitySet="Estados" />
-            <End Role="Solicitudes" EntitySet="Solicitudes" />
+          <AssociationSet Name="FK__Solicitud__IdCat__7E37BEF6" Association="Self.FK__Solicitud__IdCat__7E37BEF6">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
           </AssociationSet>
-          <AssociationSet Name="FK_Solicitudes_UsuariosAsignado" Association="Self.FK_Solicitudes_UsuariosAsignado">
-            <End Role="Usuarios" EntitySet="Usuarios" />
-            <End Role="Solicitudes" EntitySet="Solicitudes" />
+          <AssociationSet Name="FK__Solicitud__IdEst__7D439ABD" Association="Self.FK__Solicitud__IdEst__7D439ABD">
+            <End Role="Estado" EntitySet="Estado" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
           </AssociationSet>
-          <AssociationSet Name="FK_Solicitudes_UsuariosSolicitante" Association="Self.FK_Solicitudes_UsuariosSolicitante">
-            <End Role="Usuarios" EntitySet="Usuarios" />
-            <End Role="Solicitudes" EntitySet="Solicitudes" />
+          <AssociationSet Name="FK__Solicitud__IdUsu__7B5B524B" Association="Self.FK__Solicitud__IdUsu__7B5B524B">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
           </AssociationSet>
-          <AssociationSet Name="FK_Usuarios_Roles" Association="Self.FK_Usuarios_Roles">
-            <End Role="Roles" EntitySet="Roles" />
-            <End Role="Usuarios" EntitySet="Usuarios" />
+          <AssociationSet Name="FK__Solicitud__IdUsu__7C4F7684" Association="Self.FK__Solicitud__IdUsu__7C4F7684">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Solicitud" EntitySet="Solicitud" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario_R__IdRol__5EBF139D" Association="Self.FK__Usuario_R__IdRol__5EBF139D">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Usuario_Rol" EntitySet="Usuario_Rol" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario_R__IdUsu__5DCAEF64" Association="Self.FK__Usuario_R__IdUsu__5DCAEF64">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Usuario_Rol" EntitySet="Usuario_Rol" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -156,7 +214,21 @@
           <Property Name="IdCategoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NombreCategoria" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Solicitudes" Relationship="Self.FK_Solicitudes_Categorias" FromRole="Categorias" ToRole="Solicitudes" />
+          <NavigationProperty Name="Solicituds" Relationship="Self.FK__Solicitud__IdCat__7E37BEF6" FromRole="Categoria" ToRole="Solicitud" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="Documento" />
+          </Key>
+          <Property Name="Documento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PrimerApellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SegundoApellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Direccion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IdUsuario" Type="Int32" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Empleado__IdUsua__619B8048" FromRole="Empleado" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Estado">
           <Key>
@@ -165,7 +237,7 @@
           <Property Name="IdEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NombreEstado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Solicitudes" Relationship="Self.FK_Solicitudes_Estados" FromRole="Estados" ToRole="Solicitudes" />
+          <NavigationProperty Name="Solicituds" Relationship="Self.FK__Solicitud__IdEst__7D439ABD" FromRole="Estado" ToRole="Solicitud" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -174,128 +246,176 @@
           <Property Name="IdRol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NombreRol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuarios_Roles" FromRole="Roles" ToRole="Usuarios" />
+          <NavigationProperty Name="Usuario_Rol" Relationship="Self.FK__Usuario_R__IdRol__5EBF139D" FromRole="Role" ToRole="Usuario_Rol" />
         </EntityType>
-        <EntityType Name="Solicitude">
+        <EntityType Name="Solicitud">
           <Key>
             <PropertyRef Name="IdSolicitud" />
           </Key>
           <Property Name="IdSolicitud" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NumeroSolicitud" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Titulo" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Titulo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="FechaResolucion" Type="DateTime" Precision="3" />
-          <Property Name="IdUsuarioSolicitante" Type="Int32" Nullable="false" />
-          <Property Name="IdUsuarioAsignado" Type="Int32" />
+          <Property Name="IdUsuarioCreador" Type="Int32" Nullable="false" />
+          <Property Name="IdUsuarioResponsable" Type="Int32" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
           <Property Name="IdCategoria" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Categoria" Relationship="Self.FK_Solicitudes_Categorias" FromRole="Solicitudes" ToRole="Categorias" />
-          <NavigationProperty Name="Estado" Relationship="Self.FK_Solicitudes_Estados" FromRole="Solicitudes" ToRole="Estados" />
-          <NavigationProperty Name="Usuario" Relationship="Self.FK_Solicitudes_UsuariosAsignado" FromRole="Solicitudes" ToRole="Usuarios" />
-          <NavigationProperty Name="Usuario1" Relationship="Self.FK_Solicitudes_UsuariosSolicitante" FromRole="Solicitudes" ToRole="Usuarios" />
+          <NavigationProperty Name="Categoria" Relationship="Self.FK__Solicitud__IdCat__7E37BEF6" FromRole="Solicitud" ToRole="Categoria" />
+          <NavigationProperty Name="Estado" Relationship="Self.FK__Solicitud__IdEst__7D439ABD" FromRole="Solicitud" ToRole="Estado" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Solicitud__IdUsu__7B5B524B" FromRole="Solicitud" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK__Solicitud__IdUsu__7C4F7684" FromRole="Solicitud" ToRole="Usuario" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="IdUsuario" />
           </Key>
           <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Apellido" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Correo" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Contraseña" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IdRol" Type="Int32" Nullable="false" />
+          <Property Name="Correo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Documento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Role" Relationship="Self.FK_Usuarios_Roles" FromRole="Usuarios" ToRole="Roles" />
-          <NavigationProperty Name="Solicitudes" Relationship="Self.FK_Solicitudes_UsuariosAsignado" FromRole="Usuarios" ToRole="Solicitudes" />
-          <NavigationProperty Name="Solicitudes1" Relationship="Self.FK_Solicitudes_UsuariosSolicitante" FromRole="Usuarios" ToRole="Solicitudes" />
+          <Property Name="Clave" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Salt" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Empleadoes" Relationship="Self.FK__Empleado__IdUsua__619B8048" FromRole="Usuario" ToRole="Empleado" />
+          <NavigationProperty Name="Solicituds" Relationship="Self.FK__Solicitud__IdUsu__7B5B524B" FromRole="Usuario" ToRole="Solicitud" />
+          <NavigationProperty Name="Solicituds1" Relationship="Self.FK__Solicitud__IdUsu__7C4F7684" FromRole="Usuario" ToRole="Solicitud" />
+          <NavigationProperty Name="Usuario_Rol" Relationship="Self.FK__Usuario_R__IdUsu__5DCAEF64" FromRole="Usuario" ToRole="Usuario_Rol" />
         </EntityType>
-        <Association Name="FK_Solicitudes_Categorias">
-          <End Role="Categorias" Type="Self.Categoria" Multiplicity="1" />
-          <End Role="Solicitudes" Type="Self.Solicitude" Multiplicity="*" />
+        <EntityType Name="Usuario_Rol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" />
+          <Property Name="IdRol" Type="Int32" Nullable="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.FK__Usuario_R__IdRol__5EBF139D" FromRole="Usuario_Rol" ToRole="Role" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK__Usuario_R__IdUsu__5DCAEF64" FromRole="Usuario_Rol" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK__Solicitud__IdCat__7E37BEF6">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Categorias">
+            <Principal Role="Categoria">
               <PropertyRef Name="IdCategoria" />
             </Principal>
-            <Dependent Role="Solicitudes">
+            <Dependent Role="Solicitud">
               <PropertyRef Name="IdCategoria" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Solicitudes_Estados">
-          <End Role="Estados" Type="Self.Estado" Multiplicity="1" />
-          <End Role="Solicitudes" Type="Self.Solicitude" Multiplicity="*" />
+        <Association Name="FK__Empleado__IdUsua__619B8048">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Estados">
-              <PropertyRef Name="IdEstado" />
-            </Principal>
-            <Dependent Role="Solicitudes">
-              <PropertyRef Name="IdEstado" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Usuarios_Roles">
-          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
-          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Roles">
-              <PropertyRef Name="IdRol" />
-            </Principal>
-            <Dependent Role="Usuarios">
-              <PropertyRef Name="IdRol" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Solicitudes_UsuariosAsignado">
-          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="0..1" />
-          <End Role="Solicitudes" Type="Self.Solicitude" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Usuarios">
+            <Principal Role="Usuario">
               <PropertyRef Name="IdUsuario" />
             </Principal>
-            <Dependent Role="Solicitudes">
-              <PropertyRef Name="IdUsuarioAsignado" />
+            <Dependent Role="Empleado">
+              <PropertyRef Name="IdUsuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Solicitudes_UsuariosSolicitante">
-          <End Role="Usuarios" Type="Self.Usuario" Multiplicity="1" />
-          <End Role="Solicitudes" Type="Self.Solicitude" Multiplicity="*" />
+        <Association Name="FK__Solicitud__IdEst__7D439ABD">
+          <End Role="Estado" Type="Self.Estado" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Usuarios">
+            <Principal Role="Estado">
+              <PropertyRef Name="IdEstado" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="IdEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario_R__IdRol__5EBF139D">
+          <End Role="Role" Type="Self.Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario_Rol" Type="Self.Usuario_Rol" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="IdRol" />
+            </Principal>
+            <Dependent Role="Usuario_Rol">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__IdUsu__7B5B524B">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
               <PropertyRef Name="IdUsuario" />
             </Principal>
-            <Dependent Role="Solicitudes">
-              <PropertyRef Name="IdUsuarioSolicitante" />
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="IdUsuarioCreador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Solicitud__IdUsu__7C4F7684">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Solicitud">
+              <PropertyRef Name="IdUsuarioResponsable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Usuario_R__IdUsu__5DCAEF64">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Usuario_Rol" Type="Self.Usuario_Rol" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Usuario_Rol">
+              <PropertyRef Name="IdUsuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="SoporteEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Categorias" EntityType="Self.Categoria" />
-          <EntitySet Name="Estados" EntityType="Self.Estado" />
+          <EntitySet Name="Empleadoes" EntityType="Self.Empleado" />
+          <EntitySet Name="Estadoes" EntityType="Self.Estado" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
-          <EntitySet Name="Solicitudes" EntityType="Self.Solicitude" />
+          <EntitySet Name="Solicituds" EntityType="Self.Solicitud" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
-          <AssociationSet Name="FK_Solicitudes_Categorias" Association="Self.FK_Solicitudes_Categorias">
-            <End Role="Categorias" EntitySet="Categorias" />
-            <End Role="Solicitudes" EntitySet="Solicitudes" />
+          <EntitySet Name="Usuario_Rol" EntityType="Self.Usuario_Rol" />
+          <AssociationSet Name="FK__Solicitud__IdCat__7E37BEF6" Association="Self.FK__Solicitud__IdCat__7E37BEF6">
+            <End Role="Categoria" EntitySet="Categorias" />
+            <End Role="Solicitud" EntitySet="Solicituds" />
           </AssociationSet>
-          <AssociationSet Name="FK_Solicitudes_Estados" Association="Self.FK_Solicitudes_Estados">
-            <End Role="Estados" EntitySet="Estados" />
-            <End Role="Solicitudes" EntitySet="Solicitudes" />
+          <AssociationSet Name="FK__Empleado__IdUsua__619B8048" Association="Self.FK__Empleado__IdUsua__619B8048">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Empleado" EntitySet="Empleadoes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Usuarios_Roles" Association="Self.FK_Usuarios_Roles">
-            <End Role="Roles" EntitySet="Roles" />
-            <End Role="Usuarios" EntitySet="Usuarios" />
+          <AssociationSet Name="FK__Solicitud__IdEst__7D439ABD" Association="Self.FK__Solicitud__IdEst__7D439ABD">
+            <End Role="Estado" EntitySet="Estadoes" />
+            <End Role="Solicitud" EntitySet="Solicituds" />
           </AssociationSet>
-          <AssociationSet Name="FK_Solicitudes_UsuariosAsignado" Association="Self.FK_Solicitudes_UsuariosAsignado">
-            <End Role="Usuarios" EntitySet="Usuarios" />
-            <End Role="Solicitudes" EntitySet="Solicitudes" />
+          <AssociationSet Name="FK__Usuario_R__IdRol__5EBF139D" Association="Self.FK__Usuario_R__IdRol__5EBF139D">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Usuario_Rol" EntitySet="Usuario_Rol" />
           </AssociationSet>
-          <AssociationSet Name="FK_Solicitudes_UsuariosSolicitante" Association="Self.FK_Solicitudes_UsuariosSolicitante">
-            <End Role="Usuarios" EntitySet="Usuarios" />
-            <End Role="Solicitudes" EntitySet="Solicitudes" />
+          <AssociationSet Name="FK__Solicitud__IdUsu__7B5B524B" Association="Self.FK__Solicitud__IdUsu__7B5B524B">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Solicitud" EntitySet="Solicituds" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Solicitud__IdUsu__7C4F7684" Association="Self.FK__Solicitud__IdUsu__7C4F7684">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Solicitud" EntitySet="Solicituds" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Usuario_R__IdUsu__5DCAEF64" Association="Self.FK__Usuario_R__IdUsu__5DCAEF64">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="Usuario_Rol" EntitySet="Usuario_Rol" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -306,16 +426,30 @@
         <EntityContainerMapping StorageEntityContainer="SoporteModelStoreContainer" CdmEntityContainer="SoporteEntities">
           <EntitySetMapping Name="Categorias">
             <EntityTypeMapping TypeName="SoporteModel.Categoria">
-              <MappingFragment StoreEntitySet="Categorias">
+              <MappingFragment StoreEntitySet="Categoria">
                 <ScalarProperty Name="IdCategoria" ColumnName="IdCategoria" />
                 <ScalarProperty Name="NombreCategoria" ColumnName="NombreCategoria" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Estados">
+          <EntitySetMapping Name="Empleadoes">
+            <EntityTypeMapping TypeName="SoporteModel.Empleado">
+              <MappingFragment StoreEntitySet="Empleado">
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
+                <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estadoes">
             <EntityTypeMapping TypeName="SoporteModel.Estado">
-              <MappingFragment StoreEntitySet="Estados">
+              <MappingFragment StoreEntitySet="Estado">
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
                 <ScalarProperty Name="NombreEstado" ColumnName="NombreEstado" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
@@ -324,16 +458,16 @@
           </EntitySetMapping>
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="SoporteModel.Role">
-              <MappingFragment StoreEntitySet="Roles">
+              <MappingFragment StoreEntitySet="Role">
                 <ScalarProperty Name="IdRol" ColumnName="IdRol" />
                 <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Solicitudes">
-            <EntityTypeMapping TypeName="SoporteModel.Solicitude">
-              <MappingFragment StoreEntitySet="Solicitudes">
+          <EntitySetMapping Name="Solicituds">
+            <EntityTypeMapping TypeName="SoporteModel.Solicitud">
+              <MappingFragment StoreEntitySet="Solicitud">
                 <ScalarProperty Name="IdSolicitud" ColumnName="IdSolicitud" />
                 <ScalarProperty Name="NumeroSolicitud" ColumnName="NumeroSolicitud" />
                 <ScalarProperty Name="Tipo" ColumnName="Tipo" />
@@ -341,8 +475,8 @@
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
                 <ScalarProperty Name="FechaResolucion" ColumnName="FechaResolucion" />
-                <ScalarProperty Name="IdUsuarioSolicitante" ColumnName="IdUsuarioSolicitante" />
-                <ScalarProperty Name="IdUsuarioAsignado" ColumnName="IdUsuarioAsignado" />
+                <ScalarProperty Name="IdUsuarioCreador" ColumnName="IdUsuarioCreador" />
+                <ScalarProperty Name="IdUsuarioResponsable" ColumnName="IdUsuarioResponsable" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
                 <ScalarProperty Name="IdCategoria" ColumnName="IdCategoria" />
               </MappingFragment>
@@ -350,14 +484,22 @@
           </EntitySetMapping>
           <EntitySetMapping Name="Usuarios">
             <EntityTypeMapping TypeName="SoporteModel.Usuario">
-              <MappingFragment StoreEntitySet="Usuarios">
+              <MappingFragment StoreEntitySet="Usuario">
                 <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
                 <ScalarProperty Name="Correo" ColumnName="Correo" />
-                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
-                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
                 <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario_Rol">
+            <EntityTypeMapping TypeName="SoporteModel.Usuario_Rol">
+              <MappingFragment StoreEntitySet="Usuario_Rol">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

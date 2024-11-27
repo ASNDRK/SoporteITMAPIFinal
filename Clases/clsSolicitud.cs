@@ -10,14 +10,14 @@ namespace SoporteITMAPI.Clases
     public class clsSolicitud
     {
         private SoporteEntities dbsoporte = new SoporteEntities();
-        public Solicitude solicitud { get; set; }
+        public Solicitud solicitud { get; set; }
 
         // Método para insertar una nueva solicitud
         public string Insertar()
         {
             try
             {
-                dbsoporte.Solicitudes.Add(solicitud);
+                dbsoporte.Solicituds.Add(solicitud);
                 dbsoporte.SaveChanges();
                 return "Se grabó la solicitud con el ID: " + solicitud.IdSolicitud;
             }
@@ -32,7 +32,7 @@ namespace SoporteITMAPI.Clases
         {
             try
             {
-                dbsoporte.Solicitudes.AddOrUpdate(solicitud);
+                dbsoporte.Solicituds.AddOrUpdate(solicitud);
                 dbsoporte.SaveChanges();
                 return "Se actualizaron los datos de la solicitud con ID: " + solicitud.IdSolicitud;
             }
@@ -47,14 +47,14 @@ namespace SoporteITMAPI.Clases
         {
             try
             {
-                Solicitude _solicitud = Consultar(id);
+                Solicitud _solicitud = Consultar(id);
                 if (_solicitud == null)
                 {
                     return "La solicitud no se encuentra en la base de datos";
                 }
                 else
                 {
-                    dbsoporte.Solicitudes.Remove(_solicitud);
+                    dbsoporte.Solicituds.Remove(_solicitud);
                     dbsoporte.SaveChanges();
                     return "Se eliminó la solicitud con ID: " + _solicitud.IdSolicitud;
                 }
@@ -66,15 +66,15 @@ namespace SoporteITMAPI.Clases
         }
 
         // Método para consultar una solicitud por ID
-        public Solicitude Consultar(int id)
+        public Solicitud Consultar(int id)
         {
-            return dbsoporte.Solicitudes.FirstOrDefault(s => s.IdSolicitud == id);
+            return dbsoporte.Solicituds.FirstOrDefault(s => s.IdSolicitud == id);
         }
 
         // Método para obtener una lista de todas las solicitudes
-        public IEnumerable<Solicitude> ListarSolicitudes()
+        public IEnumerable<Solicitud> ListarSolicitudes()
         {
-            return dbsoporte.Solicitudes.ToList();
+            return dbsoporte.Solicituds.ToList();
         }
     }
 }

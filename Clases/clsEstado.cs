@@ -17,7 +17,7 @@ namespace SoporteITMAPI.Clases
         {
             try
             {
-                dbsoporte.Estados.Add(estado);
+                dbsoporte.Estadoes.Add(estado);
                 dbsoporte.SaveChanges();
                 return "Se grabó el estado: " + estado.NombreEstado;
             }
@@ -32,7 +32,7 @@ namespace SoporteITMAPI.Clases
         {
             try
             {
-                dbsoporte.Estados.AddOrUpdate(estado);
+                dbsoporte.Estadoes.AddOrUpdate(estado);
                 dbsoporte.SaveChanges();
                 return "Se actualizaron los datos del estado: " + estado.NombreEstado;
             }
@@ -54,7 +54,7 @@ namespace SoporteITMAPI.Clases
                 }
                 else
                 {
-                    dbsoporte.Estados.Remove(_estado);
+                    dbsoporte.Estadoes.Remove(_estado);
                     dbsoporte.SaveChanges();
                     return "Se eliminó el estado: " + _estado.NombreEstado;
                 }
@@ -68,13 +68,13 @@ namespace SoporteITMAPI.Clases
         // Método para consultar un estado por ID
         public Estado Consultar(int id)
         {
-            return dbsoporte.Estados.FirstOrDefault(e => e.IdEstado == id);
+            return dbsoporte.Estadoes.FirstOrDefault(e => e.IdEstado == id);
         }
 
         // Método para listar todos los estados
         public IQueryable<Estado> ListarEstados()
         {
-            return dbsoporte.Estados;
+            return dbsoporte.Estadoes;
         }
     }
 }

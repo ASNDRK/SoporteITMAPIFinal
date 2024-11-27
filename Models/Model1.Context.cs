@@ -26,9 +26,11 @@ namespace SoporteITMAPI.Models
         }
     
         public virtual DbSet<Categoria> Categorias { get; set; }
-        public virtual DbSet<Estado> Estados { get; set; }
+        public virtual DbSet<Empleado> Empleadoes { get; set; }
+        public virtual DbSet<Estado> Estadoes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<Solicitude> Solicitudes { get; set; }
+        public virtual DbSet<Solicitud> Solicituds { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
+        public virtual DbSet<Usuario_Rol> Usuario_Rol { get; set; }
     }
 }

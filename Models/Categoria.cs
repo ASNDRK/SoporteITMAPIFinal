@@ -17,7 +17,7 @@ namespace SoporteITMAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Categoria()
         {
-            this.Solicitudes = new HashSet<Solicitude>();
+            this.Solicituds = new HashSet<Solicitud>();
         }
     
         public int IdCategoria { get; set; }
@@ -25,6 +25,6 @@ namespace SoporteITMAPI.Models
         public string Descripcion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Solicitude> Solicitudes { get; set; }
+        public virtual ICollection<Solicitud> Solicituds { get; set; }
     }
 }

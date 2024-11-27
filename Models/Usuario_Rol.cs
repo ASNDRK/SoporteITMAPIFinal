@@ -12,19 +12,14 @@ namespace SoporteITMAPI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class Usuario_Rol
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
-        {
-            this.Usuario_Rol = new HashSet<Usuario_Rol>();
-        }
-    
+        public int Id { get; set; }
+        public int IdUsuario { get; set; }
         public int IdRol { get; set; }
-        public string NombreRol { get; set; }
-        public string Descripcion { get; set; }
+        public bool Activo { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Usuario_Rol> Usuario_Rol { get; set; }
+        public virtual Role Role { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

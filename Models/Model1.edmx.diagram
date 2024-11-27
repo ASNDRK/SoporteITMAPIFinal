@@ -4,17 +4,21 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="68b66deef8d04b1386fd5403cb861291" Name="Diagram1">
-        <EntityTypeShape EntityType="SoporteModel.Categoria" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoporteModel.Estado" Width="1.5" PointX="3" PointY="9.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoporteModel.Role" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoporteModel.Solicitude" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoporteModel.Usuario" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
-        <AssociationConnector Association="SoporteModel.FK_Solicitudes_Categorias" ManuallyRouted="false" />
-        <AssociationConnector Association="SoporteModel.FK_Solicitudes_Estados" ManuallyRouted="false" />
-        <AssociationConnector Association="SoporteModel.FK_Usuarios_Roles" ManuallyRouted="false" />
-        <AssociationConnector Association="SoporteModel.FK_Solicitudes_UsuariosAsignado" ManuallyRouted="false" />
-        <AssociationConnector Association="SoporteModel.FK_Solicitudes_UsuariosSolicitante" ManuallyRouted="false" />
+      <Diagram DiagramId="45ee3d6160cd4169b0d9dd8ea0fa4d77" Name="Diagram1">
+        <EntityTypeShape EntityType="SoporteModel.Categoria" Width="1.5" PointX="10.375" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Empleado" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Estado" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Role" Width="1.5" PointX="7.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Solicitud" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Usuario" Width="1.5" PointX="0.5" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoporteModel.Usuario_Rol" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <AssociationConnector Association="SoporteModel.FK__Solicitud__IdCat__7E37BEF6" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteModel.FK__Empleado__IdUsua__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteModel.FK__Solicitud__IdEst__7D439ABD" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteModel.FK__Usuario_R__IdRol__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteModel.FK__Solicitud__IdUsu__7B5B524B" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteModel.FK__Solicitud__IdUsu__7C4F7684" ManuallyRouted="false" />
+        <AssociationConnector Association="SoporteModel.FK__Usuario_R__IdUsu__5DCAEF64" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

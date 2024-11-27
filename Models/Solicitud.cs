@@ -12,7 +12,7 @@ namespace SoporteITMAPI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Solicitude
+    public partial class Solicitud
     {
         public int IdSolicitud { get; set; }
         public string NumeroSolicitud { get; set; }
@@ -21,8 +21,8 @@ namespace SoporteITMAPI.Models
         public string Descripcion { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public Nullable<System.DateTime> FechaResolucion { get; set; }
-        public int IdUsuarioSolicitante { get; set; }
-        public Nullable<int> IdUsuarioAsignado { get; set; }
+        public int IdUsuarioCreador { get; set; }
+        public Nullable<int> IdUsuarioResponsable { get; set; }
         public int IdEstado { get; set; }
         public int IdCategoria { get; set; }
     

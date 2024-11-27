@@ -20,7 +20,7 @@ namespace SoporteITMAPI.Clases
                 //Se debe grabar en la información con el método .savechanges();
                 dbsoporte.SaveChanges();
                 //Retorna la respuesta
-                return "Se grabó el cliente: " + usuario.Nombre;
+                return "Se grabó el usuario: " + usuario.Correo;
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace SoporteITMAPI.Clases
                 {
                     dbsoporte.Usuarios.Remove(_usuario);
                     dbsoporte.SaveChanges();
-                    return "Se eliminó el usuario: " + _usuario.Nombre + " " + _usuario.Apellido;
+                    return "Se eliminó el usuario: " + _usuario.Correo;
                 }
             }
             catch (Exception ex)

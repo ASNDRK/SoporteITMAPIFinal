@@ -17,22 +17,25 @@ namespace SoporteITMAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Usuario()
         {
-            this.Solicitudes = new HashSet<Solicitude>();
-            this.Solicitudes1 = new HashSet<Solicitude>();
+            this.Empleadoes = new HashSet<Empleado>();
+            this.Solicituds = new HashSet<Solicitud>();
+            this.Solicituds1 = new HashSet<Solicitud>();
+            this.Usuario_Rol = new HashSet<Usuario_Rol>();
         }
     
         public int IdUsuario { get; set; }
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
         public string Correo { get; set; }
-        public string Contraseña { get; set; }
-        public int IdRol { get; set; }
         public string Documento { get; set; }
+        public string Clave { get; set; }
+        public string Salt { get; set; }
     
-        public virtual Role Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Solicitude> Solicitudes { get; set; }
+        public virtual ICollection<Empleado> Empleadoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Solicitude> Solicitudes1 { get; set; }
+        public virtual ICollection<Solicitud> Solicituds { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Solicitud> Solicituds1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Usuario_Rol> Usuario_Rol { get; set; }
     }
 }
