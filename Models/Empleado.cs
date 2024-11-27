@@ -28,7 +28,7 @@ namespace SoporteITMAPI.Models
         public string Telefono { get; set; }
         public System.DateTime FechaNacimiento { get; set; }
         public Nullable<int> IdUsuario { get; set; }
-    
+        [JsonIgnore]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Usuario> Usuarios { get; set; }
     }
