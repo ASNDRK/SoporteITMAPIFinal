@@ -7,6 +7,6 @@ namespace SoporteITMAPI.Clases
 {
     public class clsEmpleado
     {
-        hujihiu
+        
     }
 }
